@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ groom_name }} & {{ bride_name }} - Wedding</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8caaeb;
+            --accent-color: #9d9ef5;
+            --cream-bg: #feede8;
+            --dark-gray: #4b5563;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, var(--cream-bg) 0%, var(--white) 100%);
+            min-height: 100vh;
+            color: var(--dark-gray);
+        }
+
+        .heading-font {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+
+        .hero-section {
+            background: var(--white);
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 10px 30px rgba(161, 98, 7, 0.1);
+            margin-bottom: 1rem;
+            padding: 2rem 0 0.5rem 0;
+            text-align: center;
+        }
+
+        .main-title {
+            color: var(--primary-color);
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: var(--dark-gray);
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .upload-section {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 2px solid var(--cream-bg);
+        }
+
+        .form-control {
+            border-radius: 15px;
+            border: 2px solid #d1d5db;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--white);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(161, 98, 7, 0.25);
+        }
+
+        .form-control::placeholder {
+            color: #9ca3af;
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+        }
+
+        .custom-file-input {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(161, 98, 7, 0.3);
+            width: 100%;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        .custom-file-input:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .custom-file-input:active {
+            transform: translateY(0);
+        }
+
+        .custom-file-input .text {
+            flex: 1;
+            text-align: center;
+        }
+
+        .file-input-wrapper.has-files .custom-file-input {
+            background: #10b981;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .file-input-wrapper.has-files .custom-file-input:hover {
+            background: #059669;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 5px 15px rgba(161, 98, 7, 0.3); }
+            50% { box-shadow: 0 5px 25px rgba(161, 98, 7, 0.5); }
+            100% { box-shadow: 0 5px 15px rgba(161, 98, 7, 0.3); }
+        }
+
+        .preview-container {
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .preview-section {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--cream-bg);
+        }
+
+        .preview-title {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .preview-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .preview-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .preview-item:hover img {
+            filter: brightness(1.1);
+        }
+
+        .preview-item.selected {
+            border: 3px solid var(--primary-color);
+            box-shadow: 0 8px 25px rgba(161, 98, 7, 0.4);
+        }
+
+        .preview-item .checkbox {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 25px;
+            height: 25px;
+            background: rgba(255,255,255,0.9);
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .preview-item.selected .checkbox {
+            background: var(--primary-color);
+        }
+
+        .preview-item .filename {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 4px 8px;
+            font-size: 11px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .selection-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--cream-bg);
+            border-radius: 15px;
+        }
+
+        .upload-info {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 4px solid var(--accent-color);
+            border-radius: 0 10px 10px 0;
+        }
+
+        .upload-btn {
+            background: var(--primary-color);
+            border: none;
+            color: var(--white);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(161, 98, 7, 0.3);
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .upload-btn:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .upload-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Tabs styling - keep both tabs blackish, highlight active with underline only */
+        .nav-tabs {
+            border-bottom: 2px solid var(--cream-bg);
+        }
+        .nav-tabs .nav-link {
+            color: var(--dark-gray) !important;
+            background: transparent !important;
+            border: none !important;
+            border-bottom: 3px solid transparent !important;
+        }
+        .nav-tabs .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+        .nav-tabs .nav-link.active {
+            color: var(--dark-gray) !important;
+            background: transparent !important;
+            border: none !important;
+            border-bottom: 3px solid var(--primary-color) !important;
+        }
+
+        /* Loading Screen Styles */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+        }
+
+        .loading-content {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid var(--cream-bg);
+            border-top: 8px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .loading-text {
+            color: var(--dark-gray);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-container {
+            background: var(--cream-bg);
+            border-radius: 25px;
+            height: 20px;
+            margin: 1rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            height: 100%;
+            border-radius: 25px;
+            width: 0%;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .upload-status {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .heart-icon {
+            color: #f1abe9;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @media(max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .upload-section, .preview-section {
+                margin: 0.75rem;
+                padding: 1.25rem;
+            }
+            
+            .preview-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            .preview-item img {
+                height: 120px;
+            }
+            
+            .selection-controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <h1 class="heading-font main-title">
+                           
+                              {{ groom_name }}  <i class="fa-solid fa-infinity me-2 heart-icon"></i> {{ bride_name }}
+                        </h1>
+                        <p class="subtitle">{{ wedding_date }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="upload-section">
+
+                        <div class="tab-content" id="uploadTabsContent">
+                            <!-- Photos Tab -->
+                            <div class="tab-pane fade show active" id="photosPane" role="tabpanel" aria-labelledby="photos-tab">
+                                <h2 class="heading-font preview-title">
+                                    <i class="fas fa-camera me-2"></i>
+                                    Upload the photos you took!
+                                </h2>
+                                <p class="text-center mb-4">We'd love to see the moments you capture!</p>
+                                
+                                <form action="/" method="post" enctype="multipart/form-data" id="uploadForm">
+                            <div class="mb-4">
+                                <label for="guestName" class="form-label heading-font" style="color: var(--primary-color); font-size: 1.1rem;">
+                                    <i class="fas fa-user me-2"></i>Name (Optional)
+                                </label>
+                                <input type="text" class="form-control" name="name" id="guestName" placeholder="">
+                            </div>
+                            
+                            <div class="file-input-wrapper" id="fileInputWrapper">
+                                <input type="file" name="photos" accept="image/*" multiple required id="fileInput" data-max-files="20">
+                                <label for="fileInput" class="custom-file-input">
+                                    <span class="icon">📸</span>
+                                    <span class="text">Select Photo (Maximum  20)</span>
+                                </label>
+                            </div>
+                            
+                            <div class="preview-container" id="previewContainer">
+                                <div class="preview-section">
+                                    <h3 class="heading-font preview-title">
+                                        <i class="fas fa-images me-2"></i>
+                                        Memories You Share
+                                    </h3>
+                                    <p class="text-center mb-4">Select the photos you want to upload to our wedding album</p>
+                                    
+                                    <div class="selection-controls" id="selectionControls">
+                                        <div class="upload-info">
+                                            <strong>Selected Photos:</strong> <span id="selectedCount">0</span> / <span id="totalCount">0</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="preview-grid" id="previewGrid"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn upload-btn" id="uploadBtn" disabled>
+                                    <i class="fas fa-cloud-upload-alt me-2"></i>Upload Selected Photos
+
+                                </button>
+                            </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center py-2 mt-3">
+            <p style="color: var(--dark-gray); opacity: 0.8;">
+            </p>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3 class="loading-title" id="loadingTitle">
+                <i class="fas fa-cloud-upload-alt me-2"></i>
+                Photos are Loading
+            </h3>
+            <p class="loading-text" id="loadingDesc">Please wait, your photos are being uploaded ...</p>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-text" id="progressText">0%</div>
+                </div>
+            </div>
+            
+            <div class="upload-status" id="uploadStatus">
+                Getting ready...
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let selectedFiles = new Set();
+        let allFiles = [];
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let recordTimerInterval = null;
+        let recordSeconds = 0;
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            const maxFiles = 20;
+            const maxFileSize = 10 * 1024 * 1024; // 10MB per file
+            const maxTotalSize = 50 * 1024 * 1024; // 50MB total
+
+            // Only update if files were actually selected (not cancelled)
+            if (files.length > 0) {
+                // Check if user selected more than 20 files
+                if (files.length > maxFiles) {
+                    alert(`You can select up to  ${maxFiles} photos. Please select fewer photos.`);
+                    e.target.value = '';
+                    return;
+                }
+
+                // Check individual file size
+                for (const file of files) {
+                    if (file.size > maxFileSize) {
+                        alert(`The file '${file.name}' is larger than 10MB. Please choose a smaller photo.`);
+                        e.target.value = '';
+                        return;
+                    }
+                }
+
+                // Check total size
+                const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+                if (totalSize > maxTotalSize) {
+                    alert(`Total file size cannot exceed 50MB. Please select fewer or smaller photos.`);
+                    e.target.value = '';
+                    return;
+                }
+
+                allFiles = files;
+                selectedFiles.clear();
+
+                const wrapper = document.getElementById('fileInputWrapper');
+                const textElement = wrapper.querySelector('.text');
+
+                wrapper.classList.add('has-files');
+                textElement.textContent = `${files.length} Photo Selected`;
+                showPreview(files);
+                updateSelectionInfo();
+            }
+            // If files.length is 0, it means user cancelled - don't update anything
+        });
+
+        function showPreview(files) {
+            const container = document.getElementById('previewContainer');
+            const grid = document.getElementById('previewGrid');
+            
+            container.style.display = 'block';
+            grid.innerHTML = '';
+            
+            files.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item selected';
+                    previewItem.dataset.index = index;
+                    
+                    previewItem.innerHTML = `
+                        <img src="${e.target.result}" alt="${file.name}">
+                        <div class="checkbox" onclick="toggleSelection(${index})">✓</div>
+                        <div class="filename">${file.name}</div>
+                    `;
+                    
+                    grid.appendChild(previewItem);
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            // Select all photos by default
+            selectedFiles.clear();
+            allFiles.forEach((_, index) => {
+                selectedFiles.add(index);
+            });
+            updateSelectionInfo();
+        }
+
+        function hidePreview() {
+            document.getElementById('previewContainer').style.display = 'none';
+            document.getElementById('uploadBtn').disabled = true;
+        }
+
+        function toggleSelection(index) {
+            const item = document.querySelector(`[data-index="${index}"]`);
+            
+            if (selectedFiles.has(index)) {
+                selectedFiles.delete(index);
+                item.classList.remove('selected');
+            } else {
+                selectedFiles.add(index);
+                item.classList.add('selected');
+            }
+            
+            updateSelectionInfo();
+        }
+
+
+
+        function updateSelectionInfo() {
+            const selectedCount = selectedFiles.size;
+            const totalCount = allFiles.length;
+            
+            document.getElementById('selectedCount').textContent = selectedCount;
+            document.getElementById('totalCount').textContent = totalCount;
+            
+            const uploadBtn = document.getElementById('uploadBtn');
+            uploadBtn.disabled = selectedCount === 0;
+            uploadBtn.innerHTML = `<i class="fas fa-cloud-upload-alt me-2"></i>${selectedCount} Upload Photo`;
+        }
+
+        // Show loading screen
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            updateProgress(0, 'Getting ready...');
+        }
+
+        // Hide loading screen
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
+        // Update progress bar and status
+        function updateProgress(percentage, status) {
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = Math.round(percentage) + '%';
+            document.getElementById('uploadStatus').textContent = status;
+        }
+
+        function setLoadingFor(type) {
+            const title = document.getElementById('loadingTitle');
+            const desc = document.getElementById('loadingDesc');
+            if (type === 'photo') {
+                title.innerHTML = '<i class="fas fa-cloud-upload-alt me-2"></i> Photos Uploading';
+                desc.textContent = 'Please wait, your photos are being uploaded...';
+            } 
+        }
+
+        // Track real upload progress
+        function trackUploadProgress(uploadId) {
+            return new Promise((resolve, reject) => {
+                const checkProgress = () => {
+                    fetch(`/upload-progress/${uploadId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                reject(new Error(data.error));
+                                return;
+                            }
+                            
+                            // Update progress bar and status
+                            updateProgress(data.percentage, data.message);
+                            
+                            if (data.status === 'completed') {
+                                setTimeout(() => {
+                                    resolve(data);
+                                }, 1500); // Show completion message for 1.5 seconds
+                            } else if (data.status === 'error') {
+                                reject(new Error(data.message));
+                            } else {
+                                // Continue checking progress
+                                setTimeout(checkProgress, 500);
+                            }
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
+                };
+                
+                // Start checking progress
+                checkProgress();
+            });
+        }
+
+        // Upload files with real progress tracking
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (selectedFiles.size === 0) {
+                alert('Please select at least one photo to upload.');
+                return;
+            }
+            
+            // Show loading screen
+            setLoadingFor('photo');
+            showLoading();
+            
+            // Create FormData with selected files
+            const formData = new FormData();
+            formData.append('name', document.querySelector('input[name="name"]').value);
+            
+            selectedFiles.forEach(index => {
+                formData.append('photos', allFiles[index]);
+            });
+            
+            // Start upload with progress tracking
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // Track progress using the upload ID
+                return trackUploadProgress(data.upload_id);
+            })
+            .then(() => {
+                // Upload completed successfully
+                hideLoading();
+                window.location.href = '/success';
+            })
+            .catch(error => {
+                console.error('Upload error:', error);
+                alert('error: ' + error.message);
+                hideLoading();
+            });
+        });
+    </script>
+</body>
+</html>
